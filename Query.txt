@@ -1,0 +1,256 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use sales
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_sales |
++-----------------+
+| customers       |
+| date            |
+| markets         |   |
+| products        |
+| transactions    |
++-----------------+
+5 rows in set (0.00 sec)
+
+mysql> desc customers;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| customer_code | varchar(45) | NO   | PRI | NULL    |       |
+| custmer_name  | varchar(45) | YES  |     | NULL    |       |
+| customer_type | varchar(45) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc date;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| date        | date        | NO   | PRI | NULL    |       |
+| cy_date     | date        | YES  |     | NULL    |       |
+| year        | int         | YES  |     | NULL    |       |
+| month_name  | varchar(45) | YES  |     | NULL    |       |
+| date_yy_mmm | varchar(45) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc markets;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| markets_code | varchar(45) | NO   | PRI | NULL    |       |
+| markets_name | varchar(45) | YES  |     | NULL    |       |
+| zone         | varchar(45) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc products;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| product_code | varchar(45) | NO   | PRI | NULL    |       |
+| product_type | varchar(45) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc transactions;
++--------------------------+-------------+------+-----+---------+-------+
+| Field                    | Type        | Null | Key | Default | Extra |
++--------------------------+-------------+------+-----+---------+-------+
+| product_code             | varchar(45) | YES  |     | NULL    |       |
+| customer_code            | varchar(45) | YES  |     | NULL    |       |
+| market_code              | varchar(45) | YES  |     | NULL    |       |
+| order_date               | date        | YES  |     | NULL    |       |
+| sales_qty                | int         | YES  |     | NULL    |       |
+| sales_amount             | double      | YES  |     | NULL    |       |
+| currency                 | varchar(45) | YES  |     | NULL    |       |
+| profit_margin_percentage | double      | YES  |     | NULL    |       |
+| profit_margin            | double      | YES  |     | NULL    |       |
+| cost_price               | double      | YES  |     | NULL    |       |
++--------------------------+-------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select * from transactions limit 10;
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+| product_code | customer_code | market_code | order_date | sales_qty | sales_amount | currency | profit_margin_percentage | profit_margin | cost_price |
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+| Prod279      | Cus020        | Mark011     | 2017-10-11 |         1 |          102 | INR      |                     0.39 |         39.78 |      62.22 |
+| Prod279      | Cus020        | Mark011     | 2017-10-18 |         1 |          102 | INR      |                    -0.12 |        -12.24 |     114.24 |
+| Prod279      | Cus020        | Mark011     | 2017-10-19 |         1 |          102 | INR      |                     0.29 |         29.58 |      72.42 |
+| Prod279      | Cus020        | Mark011     | 2017-11-08 |         1 |          102 | INR      |                     0.36 |         36.72 |      65.28 |
+| Prod279      | Cus020        | Mark011     | 2018-03-09 |         1 |          102 | INR      |                    -0.35 |         -35.7 |      137.7 |
+| Prod279      | Cus020        | Mark011     | 2018-03-20 |         1 |          102 | INR      |                     0.26 |         26.52 |      75.48 |
+| Prod279      | Cus020        | Mark011     | 2018-03-22 |         1 |          102 | INR      |                    -0.35 |         -35.7 |      137.7 |
+| Prod279      | Cus020        | Mark011     | 2018-03-23 |         1 |          102 | INR      |                    -0.35 |         -35.7 |      137.7 |
+| Prod279      | Cus020        | Mark011     | 2018-03-29 |         1 |          102 | INR      |                     0.34 |         34.68 |      67.32 |
+| Prod279      | Cus020        | Mark011     | 2018-04-16 |         1 |          102 | INR      |                    -0.06 |         -6.12 |     108.12 |
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select sum(profit_margin) from transactions;
++--------------------+
+| sum(profit_margin) |
++--------------------+
+|  24657068.40999993 |
++--------------------+
+1 row in set (0.44 sec)
+
+mysql> select sum(cost_price) from transactions;
++-------------------+
+| sum(cost_price)   |
++-------------------+
+| 960211894.5899998 |
++-------------------+
+1 row in set (0.20 sec)
+
+mysql> select sum(sales_amount) from transactions;
++-------------------+
+| sum(sales_amount) |
++-------------------+
+|         984813463 |
++-------------------+
+1 row in set (0.20 sec)
+
+mysql> select sum(sales_qty) from transactions;
++----------------+
+| sum(sales_qty) |
++----------------+
+|        2429282 |
++----------------+
+1 row in set (0.22 sec)
+
+mysql> select sum(profit_margin) as loss from transactions where profit_margin<0;
++--------------------+
+| loss               |
++--------------------+
+| -81331664.91999964 |
++--------------------+
+1 row in set (0.19 sec)
+
+mysql> select sum(profit_margin) as profit from transactions where profit_margin>0;
++--------------------+
+| profit             |
++--------------------+
+| 105988733.32999963 |
++--------------------+
+1 row in set (0.17 sec)
+
+mysql> select sum(sales_amount),sum(cost_price),sum(profit_margin),product_type from transactions as t join products as p on t.product_code=p.product_code group by p.product_type;
++-------------------+--------------------+--------------------+---------------+
+| sum(sales_amount) | sum(cost_price)    | sum(profit_margin) | product_type  |
++-------------------+--------------------+--------------------+---------------+
+ |        146039576 | 143163017.99000016 | 2876558.0100000096 | Distribution
+    |     369812648 |  360145592.3099989 |   9722555.68999997 | Own Brand
++-------------------+--------------------+--------------------+---------------+
+2 rows in set (1.43 sec)
+
+mysql> select customer_type, sum(sales_amount),sum(cost_price),sum(profit_margin) from transactions as t join customers as c on t.customer_code=c.customer_code group by c.customer_type;
++----------------+-------------------+-------------------+--------------------+
+| customer_type  | sum(sales_amount) | sum(cost_price)   | sum(profit_margin) |
++----------------+-------------------+-------------------+--------------------+
+| E-Commerce     |         240343625 | 231868708.0200008 |  8474916.979999984 |
+| Brick & Mortar |         744469838 | 728343186.5700061 | 16182151.429999953 |
++----------------+-------------------+-------------------+--------------------+
+2 rows in set (0.59 sec)
+
+mysql> select m.markets_name, sum(sales_amount), sum(cost_price), sum(profit_margin) from transactions as t join markets as m on t.market_code=m.markets_code group by m.markets_name;
++--------------+-------------------+--------------------+--------------------+
+| markets_name | sum(sales_amount) | sum(cost_price)    | sum(profit_margin) |
++--------------+-------------------+--------------------+--------------------+
+| Nagpur       |          55026321 |  53614211.27999999 | 1412109.7200000007 |
+| Delhi NCR    |         519514271 |  507615972.4799989 |  11953798.51999997 |
+| Ahmedabad    |         132307441 | 129459172.48999992 | 2848268.5099999895 |
+| Bhopal       |          58609861 |  56322711.30999989 | 2287149.6900000065 |
+| Mumbai       |         150084801 | 145212161.23000014 |  4872639.769999992 |
+| Kanpur       |          13582609 |  13648487.45000001 | -65878.44999999997 |
+| Hyderabad    |           7436823 |  7389865.780000001 |  46957.22000000004 |
+| Patna        |           4428393 |  4246132.219999998 | 182260.77999999994 |
+| Surat        |           2605796 |         2479118.95 | 126677.04999999987 |
+| Bhubaneshwar |            893857 |  858260.6400000001 | 35596.359999999986 |
+| Kochi        |          18813466 |  18110176.00999999 |  703289.9900000001 |
+| Chennai      |          18042702 | 17742128.999999985 |  300573.0000000002 |
+| Bengaluru    |            373115 | 450649.95999999996 | -77534.96000000002 |
+| Lucknow      |           3094007 | 3062845.7899999996 | 31161.210000000014 |
++--------------+-------------------+--------------------+--------------------+
+14 rows in set (0.73 sec)
+
+mysql> delimiter @
+mysql> create procedure market_details()
+    -> begin
+    -> select m.markets_name, sum(sales_amount), sum(cost_price), sum(profit_margin) from transactions as t join markets as m on t.market_code=m.markets_code group by m.markets_name;
+    -> end@
+Query OK, 0 rows affected (0.67 sec)
+
+mysql> call market_details()
+    -> @
++--------------+-------------------+--------------------+--------------------+
+| markets_name | sum(sales_amount) | sum(cost_price)    | sum(profit_margin) |
++--------------+-------------------+--------------------+--------------------+
+| Nagpur       |          55026321 |  53614211.27999999 | 1412109.7200000007 |
+| Delhi NCR    |         519514271 |  507615972.4799989 |  11953798.51999997 |
+| Ahmedabad    |         132307441 | 129459172.48999992 | 2848268.5099999895 |
+| Bhopal       |          58609861 |  56322711.30999989 | 2287149.6900000065 |
+| Mumbai       |         150084801 | 145212161.23000014 |  4872639.769999992 |
+| Kanpur       |          13582609 |  13648487.45000001 | -65878.44999999997 |
+| Hyderabad    |           7436823 |  7389865.780000001 |  46957.22000000004 |
+| Patna        |           4428393 |  4246132.219999998 | 182260.77999999994 |
+| Surat        |           2605796 |         2479118.95 | 126677.04999999987 |
+| Bhubaneshwar |            893857 |  858260.6400000001 | 35596.359999999986 |
+| Kochi        |          18813466 |  18110176.00999999 |  703289.9900000001 |
+| Chennai      |          18042702 | 17742128.999999985 |  300573.0000000002 |
+| Bengaluru    |            373115 | 450649.95999999996 | -77534.96000000002 |
+| Lucknow      |           3094007 | 3062845.7899999996 | 31161.210000000014 |
++--------------+-------------------+--------------------+--------------------+
+14 rows in set (0.86 sec)
+
+Query OK, 0 rows affected (0.92 sec)
+
+mysql> select * from transactions order by Profit_margin desc limit 10
+    -> @
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+| product_code | customer_code | market_code | order_date | sales_qty | sales_amount | currency | profit_margin_percentage | profit_margin | cost_price |
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+| Prod318      | Cus038        | Mark013     | 2018-02-23 |      1798 |      1338264 | INR      |                     0.36 |     481775.04 |  856488.96 |
+| Prod329      | Cus006        | Mark004     | 2018-12-14 |       280 |      1160782 | INR      |                     0.38 |     441097.16 |  719684.84 |
+| Prod329      | Cus006        | Mark004     | 2019-01-18 |       360 |      1477458 | INR      |                     0.28 |     413688.24 | 1063769.76 |
+| Prod329      | Cus006        | Mark004     | 2018-11-23 |       240 |       994954 | INR      |                      0.4 |      397981.6 |   596972.4 |
+| Prod049      | Cus022        | Mark002     | 2018-03-07 |       747 |       996102 | INR      |                     0.32 |     318752.64 |  677349.36 |
+| Prod329      | Cus006        | Mark004     | 2019-01-08 |       240 |       984977 | INR      |                     0.31 |     305342.87 |  679634.13 |
+| Prod316      | Cus020        | Mark004     | 2018-02-28 |       480 |       878935 | INR      |                     0.34 |      298837.9 |   580097.1 |
+| Prod040      | Cus020        | Mark004     | 2018-03-09 |       400 |       807301 | INR      |                     0.37 |     298701.37 |  508599.63 |
+| Prod304      | Cus006        | Mark004     | 2018-08-03 |       600 |       809574 | INR      |                     0.36 |     291446.64 |  518127.36 |
+| Prod308      | Cus006        | Mark004     | 2018-07-05 |       560 |       762949 | INR      |                     0.35 |     267032.15 |  495916.85 |
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+10 rows in set (0.33 sec)
+
+mysql> select * from transactions order by Profit_margin asc limit 10@
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+| product_code | customer_code | market_code | order_date | sales_qty | sales_amount | currency | profit_margin_percentage | profit_margin | cost_price |
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+| Prod073      | Cus006        | Mark004     | 2020-04-16 |       947 |      1477394 | INR      |                    -0.25 |     -369348.5 |  1846742.5 |
+| Prod159      | Cus006        | Mark004     | 2018-01-30 |      1480 |      1228148 | INR      |                    -0.29 |    -356162.92 | 1584310.92 |
+| Prod329      | Cus006        | Mark004     | 2018-10-26 |       200 |       829130 | INR      |                    -0.35 |     -290195.5 |  1119325.5 |
+| Prod316      | Cus006        | Mark004     | 2018-08-07 |       640 |      1316921 | INR      |                    -0.21 |    -276553.41 | 1593474.41 |
+| Prod328      | Cus006        | Mark004     | 2018-07-18 |       303 |       850509 | INR      |                     -0.3 |     -255152.7 |  1105661.7 |
+| Prod332      | Cus020        | Mark004     | 2018-01-03 |       393 |       778588 | INR      |                    -0.26 |    -202432.88 |  981020.88 |
+| Prod084      | Cus006        | Mark004     | 2020-02-28 |       800 |       666111 | INR      |                     -0.3 |     -199833.3 |   865944.3 |
+| Prod329      | Cus006        | Mark004     | 2020-03-19 |       160 |       629750 | INR      |                    -0.31 |     -195222.5 |   824972.5 |
+| Prod320      | Cus006        | Mark004     | 2020-05-08 |       276 |       873528 | INR      |                    -0.22 |    -192176.16 | 1065704.16 |
+| Prod324      | Cus006        | Mark004     | 2018-04-13 |       333 |       589958 | INR      |                    -0.32 |    -188786.56 |  778744.56 |
++--------------+---------------+-------------+------------+-----------+--------------+----------+--------------------------+---------------+------------+
+10 rows in set (0.53 sec)
+
+mysql>
